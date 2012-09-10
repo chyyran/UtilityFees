@@ -1,0 +1,6 @@
+name: UtilityFees
+main: net.mystia.UtilityFees.UtilityFeesMain
+version: 0.5
+description: Charge players for Redstone and Water Usage!
+author: ron975
+depend: [Vault]
