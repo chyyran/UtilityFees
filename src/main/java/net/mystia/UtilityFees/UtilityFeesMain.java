@@ -31,6 +31,18 @@ public class UtilityFeesMain extends JavaPlugin
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		this.getServer().getScheduler().scheduleAsyncRepeatingTask(this, new Runnable()
+		{
+
+			public void run()
+			{
+				for (String player : listener.counter.keySet())
+				{
+					economy.withdrawPlayer(player, (double) listener.counter.get(player));
+				}
+				;
+			}
+		}, 60L, 24000L);
 
 	}
 

@@ -8,6 +8,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 public class UtilityFeesListener implements Listener
@@ -28,18 +29,20 @@ public class UtilityFeesListener implements Listener
 		}
 	}
 
+	@EventHandler(priority = EventPriority.MONITOR)
 	public void RedstoneBlockPlaceEvent(BlockPlaceEvent e)
 	{
 		if (e.getBlock().getType() == Material.REDSTONE_TORCH_OFF
 				|| e.getBlock().getType() == Material.WOOD_PLATE
-				|| e.getBlock().getType() == Material.STONE_PLATE)
+				|| e.getBlock().getType() == Material.STONE_PLATE
+				)
 		{
 			String player = e.getPlayer().getName();
 			Integer newValue = counter.get(player) + 1;
 			counter.put(player, newValue);
 		}
 	}
-
+	@EventHandler(priority = EventPriority.MONITOR)
 	public void RedstoneBlockBreakEvent(BlockBreakEvent e)
 	{
 		if (e.getBlock().getType() == Material.REDSTONE_TORCH_OFF
@@ -50,6 +53,16 @@ public class UtilityFeesListener implements Listener
 			Integer newValue = counter.get(player) - 1;
 			counter.put(player, newValue);
 		}
+	}
+	
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void WaterBucketEmptyEvent(PlayerBucketEmptyEvent e){
+		if (e.getBucket() == Material.WATER_BUCKET){
+			String player = e.getPlayer().getName();
+			Integer newValue = counter.get(player) + 1;
+			counter.put(player, newValue);
+		}
+		
 	}
 
 }
