@@ -15,7 +15,7 @@ public class UtilityFeesMain extends JavaPlugin
 	private UtilityFeesListener listener;
 
 	public void onEnable()
-	{
+	{ //Checks if Vault and economy is installed properly
 		if (!setupEconomy())
 		{
 			getLogger().severe("No Vault dependency found, disabling plugin");
@@ -38,7 +38,16 @@ public class UtilityFeesMain extends JavaPlugin
 			{
 				for (String player : listener.counter.keySet())
 				{
-					economy.withdrawPlayer(player, (double) listener.counter.get(player));
+					/*Gets how many times a player has placed or used a 
+					 * Redstone torch
+					 * Lever
+					 * Water
+					 * Pressure Plate
+					 * and multiplies it by 25
+					 * and charges the player that amount
+					 */
+					int payment = listener.counter.get(player) * 25;
+					economy.withdrawPlayer(player, (double) payment);
 				}
 				;
 			}
@@ -46,6 +55,7 @@ public class UtilityFeesMain extends JavaPlugin
 
 	}
 
+	//Sets up economy
 	private boolean setupEconomy()
 	{
 		RegisteredServiceProvider<Economy> economyProvider = getServer().getServicesManager()
@@ -60,6 +70,7 @@ public class UtilityFeesMain extends JavaPlugin
 
 	public void onDisable()
 	{
+		//Saves counter data to file to persist between restarts
 		try
 		{
 			SLAPI.save(listener.counter, this.getDataFolder() + File.separator + "fees.dat");
